@@ -24,6 +24,8 @@ export interface SlidingUpPanelProps {
   allowMomentum?: boolean
   allowDragging?: boolean
   showBackdrop?: boolean
+  hideOnBackdropTap?: boolean
+  stopFlickOnBackdropTap?: boolean
   backdropOpacity?: number
   friction?: number
   containerStyle?: StyleProp<ViewStyle>
