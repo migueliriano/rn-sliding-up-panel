@@ -152,6 +152,7 @@ class SlidingUpPanel extends React.PureComponent {
 
       this._flick.setMax(top)
       this._flick.setMin(bottom)
+      this._updatePointer(animatedValue)
 
       // If the panel is below the new 'bottom'
       if (animatedValue < bottom || animatedValue > top) {
@@ -282,28 +283,7 @@ class SlidingUpPanel extends React.PureComponent {
   }
 
   _onAnimatedValueChange({value}) {
-    const isAtBottom = this._isAtBottom(value)
-
-    if (isAtBottom) {
-      this.props.onBottomReached()
-      this.props.avoidKeyboard && Keyboard.dismiss()
-    }
-
-    if (this._backdrop == null) {
-      return
-    }
-
-    // @TODO: Find a better way to update pointer events when animated value changed
-
-    if (isAtBottom && this._backdropPointerEvents === 'box-only') {
-      this._backdropPointerEvents = 'none'
-      this._backdrop.setNativeProps({pointerEvents: 'none'})
-    }
-
-    if (!isAtBottom && this._backdropPointerEvents === 'none') {
-      this._backdropPointerEvents = 'box-only'
-      this._backdrop.setNativeProps({pointerEvents: 'box-only'})
-    }
+    this._updatePointer(value)
   }
 
   _onKeyboardShown(event) {
@@ -374,6 +354,30 @@ class SlidingUpPanel extends React.PureComponent {
   _isAtBottom(value) {
     const {bottom} = this.props.draggableRange
     return value <= bottom
+  }
+
+  _updatePointer(value) {
+    console.log('value', value);
+    const isAtBottom = this._isAtBottom(value)
+
+    if (isAtBottom) {
+      this.props.onBottomReached()
+      this.props.avoidKeyboard && Keyboard.dismiss()
+    }
+
+    if (this._backdrop == null) {
+      return
+    }
+
+    if (isAtBottom && this._backdropPointerEvents === 'box-only') {
+      this._backdropPointerEvents = 'none'
+      this._backdrop.setNativeProps({pointerEvents: 'none'})
+    }
+
+    if (!isAtBottom && this._backdropPointerEvents === 'none') {
+      this._backdropPointerEvents = 'box-only'
+      this._backdrop.setNativeProps({pointerEvents: 'box-only'})
+    }
   }
 
   _storeKeyboardPosition(value) {
