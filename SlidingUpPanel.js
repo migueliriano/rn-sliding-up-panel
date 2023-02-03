@@ -357,7 +357,6 @@ class SlidingUpPanel extends React.PureComponent {
   }
 
   _updatePointer(value) {
-    console.log('value', value);
     const isAtBottom = this._isAtBottom(value)
 
     if (isAtBottom) {
